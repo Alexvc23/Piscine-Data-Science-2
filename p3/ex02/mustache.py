@@ -9,7 +9,7 @@ host = "localhost"
 port = "5432"
 
 try:
-    with open("mustache.sql", "r") as sql_file:
+    with open("ex02/mustache.sql", "r") as sql_file:
         sql_script = sql_file.read()
     print("SQL code has been imported!")
     conn = psycopg2.connect(
@@ -29,7 +29,7 @@ try:
     cursor.close()
     conn.close()
 
-    prices = [price for event_type, price in data if event_type == 'purchase']
+    prices = [float(price) for event_type, price in data if event_type == 'purchase']
 
     count = len(prices)
     mean_price = np.mean(prices)

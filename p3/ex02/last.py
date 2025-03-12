@@ -3,13 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 dbname = "piscineds"
-user = "zstenger"
-password = "msp"
+user = "jvalenci"
+password = "mysecretpassword"
 host = "localhost"
 port = "5432"
 
 try:
-    with open("last.sql", "r") as sql_file:
+    with open("ex02/last.sql", "r") as sql_file:
         sql_script = sql_file.read()
     print("SQL code has been imported!")
     conn = psycopg2.connect(
@@ -29,7 +29,7 @@ try:
     cursor.close()
     conn.close()
 
-    avg_cart_prices = [row[1] for row in data]
+    avg_cart_prices = [float(row[1]) for row in data]
 
     plt.figure(figsize=(10, 6))
     plt.boxplot(avg_cart_prices, vert=False, widths=0.5, notch=True,
