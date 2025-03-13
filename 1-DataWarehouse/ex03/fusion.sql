@@ -5,6 +5,7 @@ BEGIN;
 
 DO $$
 DECLARE
+    -- Variables to store counts for verification
     original_customer_count INTEGER;
     enhanced_customer_count INTEGER;
 BEGIN
@@ -22,6 +23,8 @@ BEGIN
 
         -- Check for duplicates in the items table
         RAISE NOTICE 'Checking for duplicate products in items table...';
+        -- Use PERFORM to execute a query without returning results
+        -- This is useful for checking conditions and raising exceptions
         PERFORM 
             product_id, 
             COUNT(*) AS duplicate_count
@@ -43,6 +46,7 @@ BEGIN
         ORDER BY product_id, category_id;
 
         -- Verify the deduplication worked
+        -- Count the original items and the deduplicated items
         RAISE NOTICE 'Deduplication summary: % original items, % deduplicated items, % duplicates removed',
             (SELECT COUNT(*) FROM items),
             (SELECT COUNT(*) FROM items_deduplicated),
@@ -64,7 +68,11 @@ BEGIN
             i.brand
         FROM
             customers c
-        LEFT JOIN
+        -- LEFT JOIN to keep all customer records, even if there is no product information
+        -- This is important to avoid losing customer data
+        -- Add items tables to the right side of the join
+        -- Left means prioritize the customers table that is on the left side
+        LEFT JOIN 
             items_deduplicated i ON c.product_id = i.product_id;
 
         -- Verify counts match
@@ -89,6 +97,7 @@ BEGIN
 
         -- Replace the existing customers table with the enhanced version
         DROP TABLE customers;
+        -- Rename the enhanced table to the original name
         ALTER TABLE customers_enhanced RENAME TO customers;
 
         -- Clean up the temporary table
