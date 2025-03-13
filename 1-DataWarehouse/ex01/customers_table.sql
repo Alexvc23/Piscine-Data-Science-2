@@ -12,7 +12,7 @@ BEGIN
     -- Create the customers table with the same structure
     CREATE TABLE IF NOT EXISTS customers (
         event_time TIMESTAMP,
-        event_type VARCHAR(255),
+        event_type VARCHAR(256),
         product_id INTEGER,
         price NUMERIC(10, 2),
         user_id BIGINT,

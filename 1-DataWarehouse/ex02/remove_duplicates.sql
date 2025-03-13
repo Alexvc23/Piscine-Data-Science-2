@@ -46,6 +46,8 @@ WITH ranked_records AS (
             PARTITION BY event_type, product_id, user_id
             ORDER BY event_time
         ) AS action_rank,
+        -- Calculate time difference to next identical action
+        -- LEAD() function is used to get the next row's event_time
         LEAD(event_time) OVER (
             PARTITION BY event_type, product_id, user_id
             ORDER BY event_time
@@ -65,6 +67,8 @@ WHERE
     -- Keep only the first instance of exact duplicates
     exact_duplicate_rank = 1
     -- Remove records where the next identical action is within 1 second
+    -- This keeps only the first action within a 1-second window
+    -- Extract 
     AND (time_diff_to_next IS NULL OR EXTRACT(EPOCH FROM time_diff_to_next) > 1);
 
 -- Step 4: Check if deduplication process found any duplicates
