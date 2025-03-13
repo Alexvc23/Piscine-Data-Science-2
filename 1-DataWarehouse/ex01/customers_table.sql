@@ -1,7 +1,8 @@
 -- Transaction block with error handling
 BEGIN;
 
--- Set client_min_messages to notice to see info messages
+-- Set client_min_messages parameter to notice to see info messages
+-- TO notice is used to display only NOTICE messages in the logging system
 SET client_min_messages TO notice;
 
 DO $$
