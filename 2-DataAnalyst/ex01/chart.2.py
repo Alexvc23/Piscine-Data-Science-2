@@ -36,7 +36,7 @@ try:
     for user_id, event_time, event_type, price in data:
         if event_type == 'purchase':
             date_str = event_time.strftime('%Y-%m-%d')
-            daily_sales[date_str] += price
+            daily_sales[date_str] += float(price)
             unique_customers[date_str].add(user_id)
     
     dates = list(daily_sales.keys())
