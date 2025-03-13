@@ -172,7 +172,57 @@ psql -U your_login -d piscineds -f ex01/customers_table.sql
 
 ### Exercise 02: Removing Duplicates
 
-**Using the SQL Script:**
+This exercise focuses on the removal of duplicate records from the database.
+
+The SQL script (`ex02/remove_duplicates.sql`) identifies and eliminates duplicate entries based on temporal proximity. It leverages the LEAD() window function to detect when the same user performs identical actions on the same product within a short time interval.
+
+The technique works by:
+1. Partitioning data by event_type, product_id, and user_id
+2. Calculating the time difference between consecutive events in each partition
+3. Flagging events that occur too close together as potential duplicates
+4. Removing these duplicate records while preserving the original user interaction pattern
+
+This cleaning process is essential for maintaining data integrity and ensuring accurate analytics, as duplicate records can significantly skew metrics like engagement rates, conversion counts, and user behavior analysis.
+
+
+# SQL Window Function with LEAD
+
+The selected code is using a SQL window function called `LEAD()` to calculate the time difference between consecutive events. Let's break it down:
+
+```sql
+LEAD(event_time) OVER (
+    PARTITION BY event_type, product_id, user_id
+    ORDER BY event_time
+) - event_time AS time_diff_to_next
+```
+
+## Components:
+
+1. **LEAD Function**: 
+   - `LEAD(event_time)` looks ahead to the next row's `event_time` value
+   - It returns NULL if there is no next row
+
+2. **OVER Clause**:
+   - Defines the window of rows the function operates on
+
+3. **PARTITION BY**:
+   - Divides rows into groups based on `event_type`, `product_id`, and `user_id`
+   - The window function is applied separately within each group
+
+4. **ORDER BY**:
+   - Sorts rows within each partition by `event_time`
+   - Determines the order for finding the "next" row
+
+5. **Calculation**:
+   - `LEAD(event_time) - event_time`: Subtracts the current row's timestamp from the next row's timestamp
+   - Returns the time difference between consecutive events
+   - Named as `time_diff_to_next`
+
+This calculation is useful for finding duplicate or closely timed events, analyzing user behavior sequences, or implementing time-based business rules.
+
+To execute this data cleaning operation, run the provided SQL script against your database using the psql command shown above.
+
+Using the SQL Script:**
 ```bash
 psql -U your_login -d piscineds -f ex02/remove_duplicates.sql
 ```

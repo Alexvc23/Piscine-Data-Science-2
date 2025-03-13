@@ -5,6 +5,9 @@ BEGIN;
 
 -- Step 0: Check if the customers table exists
 -- making sure it rolls back the transaction if the table does not exist
+
+-- ─────────────────────────────────────────────────────────────────────────────
+
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT FROM pg_tables WHERE tablename = 'customers') THEN
@@ -37,6 +40,7 @@ WITH ranked_records AS (
         user_session,
         source_table,
         -- Identify exact duplicates (all columns match)
+        -- ROW_NUMBER() assigns a unique number to each row within a partition
         ROW_NUMBER() OVER (
             PARTITION BY event_time, event_type, product_id, price, user_id, user_session, source_table
             ORDER BY event_time
@@ -66,9 +70,11 @@ FROM ranked_records
 WHERE 
     -- Keep only the first instance of exact duplicates
     exact_duplicate_rank = 1
-    -- Remove records where the next identical action is within 1 second
+    -- Remove records where the next identical action is within 1 second because they are considered duplicates
+    -- Remove nulls beacuse they are the last action for that user
+    -- e.g if the user has 3 actions, the 3rd action will have a null time_diff_to_next
+    -- because there is no next action to compare to
     -- This keeps only the first action within a 1-second window
-    -- Extract 
     AND (time_diff_to_next IS NULL OR EXTRACT(EPOCH FROM time_diff_to_next) > 1);
 
 -- Step 4: Check if deduplication process found any duplicates
@@ -109,6 +115,8 @@ DROP TABLE customers;
 ALTER TABLE customers_deduplicated RENAME TO customers;
 
 -- Step 9: Recreate the indexes with validation
+-- indexes helps to speed up queries beacuse they allow the database to quickly find the rows
+-- without having to scan the entire table
 CREATE INDEX idx_customers_event_time ON customers(event_time);
 CREATE INDEX idx_customers_product_id ON customers(product_id);
 CREATE INDEX idx_customers_user_id ON customers(user_id);
@@ -118,7 +126,7 @@ SELECT
     indexname, 
     tablename 
 FROM 
-    pg_indexes 
+    pg_indexes -- system catalog that stores information about indexes
 WHERE 
     tablename = 'customers';
 
