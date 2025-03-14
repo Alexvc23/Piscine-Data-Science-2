@@ -1,3 +1,9 @@
+# A script to connect to a PostgreSQL database, retrieve customer purchase data, and create 
+    # a monthly sales bar chart.
+# !3. Processes the data to calculate total monthly sales
+# ?4. Creates a bar chart showing sales trends over a 4-month period (Oct-Jan)
+# ?5. Displays the sales in Altairian Dollars (with an apparent 20% reduction applied)
+
 import psycopg2
 from datetime import datetime
 import matplotlib.pyplot as plt
