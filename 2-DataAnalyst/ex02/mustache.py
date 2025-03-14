@@ -47,17 +47,32 @@ try:
     print(f"75% {quartiles[2]:.6f}")
     print(f"max {max_price:.6f}")
 
+    # (ax1, ax2) are the two subplots
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+    # notch=True makes the boxplot notched (notch is the indentation at the median)
     boxes = ax1.boxplot(prices, vert=False, widths=0.5, notch=True,
+                        # boxprops appereance of the boxes
                         boxprops=dict(facecolor='lightgray', edgecolor='none'),
+                        # flierprops appearance of the outliers
+                            # marker is the shape of the outlier "D" is a diamond
+                            # patch_artist=True fills the outliers
                         flierprops=dict(marker='D', markersize=8, markerfacecolor='lightgray', markeredgecolor='none'),
                         patch_artist=True)
     ax1.set_yticks([])
     ax1.set_xlabel("Price")
     ax1.set_title("Full Box Plot")
 
+    # ──────────────────────────────────────────────────────────────────────
+    # boxprops is used to customize the appearance of the boxes
     boxprops = dict(facecolor='green', edgecolor='black')
+    # medianprops is used to customize the appearance
+    # of the median line
     medianprops = dict(linestyle='-', linewidth=2, color='black')
+    # boxplot() method creates the boxplot
+    # vert=False makes the boxplot horizontal
+    # widths=0.5 sets the width of the boxes
+    # notch=True makes the boxplot notched
+    # showfliers=False hides the outliers
     ax2.boxplot(prices, vert=False, widths=0.5, notch=True,
                 boxprops=boxprops, medianprops=medianprops, showfliers=False,
                 patch_artist=True)

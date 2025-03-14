@@ -7,7 +7,7 @@ host = "localhost"
 port = "5432"
 
 try:
-    with open("remove_duplicates.sql", "r") as sql_file:
+    with open("ex02/remove_duplicates.sql", "r") as sql_file:
         sql_script = sql_file.read()
     print("SQL code has been imported!")
     conn = psycopg2.connect(

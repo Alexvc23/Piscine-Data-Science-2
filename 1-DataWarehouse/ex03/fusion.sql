@@ -62,7 +62,6 @@ BEGIN
             c.price,
             c.user_id,
             c.user_session,
-            c.source_table,
             i.category_id,
             i.category_code,
             i.brand

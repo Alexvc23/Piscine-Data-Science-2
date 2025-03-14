@@ -12,3 +12,4 @@ jupyter==1.0.0
 scipy==1.10.1
 colorama==0.4.6
 kneed==0.8.2
+sqlalchemy==1.4.25
