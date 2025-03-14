@@ -10,9 +10,6 @@ host = "localhost"
 port = "5432"
 
 try:
-    with open("ex01/chart.1.sql", "r") as sql_file:
-        sql_script = sql_file.read()
-    print("SQL code has been imported!")
     conn = psycopg2.connect(
         dbname=dbname,
         user=user,
@@ -22,7 +19,14 @@ try:
     )
     print("Connected to PostgreSQL!")
     cursor = conn.cursor()
-    cursor.execute(sql_script)
+
+    # Direct SQL query instead of importing from file
+    sql_query = """
+    SELECT event_time, event_type, price
+    FROM customers;
+    """
+
+    cursor.execute(sql_query)
     print("SQL script executed successfully!")
     data = cursor.fetchall()
     print("Data has been fetched from the table.")

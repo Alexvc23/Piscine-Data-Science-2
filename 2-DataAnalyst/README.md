@@ -22,6 +22,28 @@ The selected code shows how to create a horizontal boxplot visualization of aver
 
 This boxplot will show the distribution of cart prices, highlighting the median, quartiles, range, and any potential outliers in the dataset.
 
+Now I see what you were referring to! These are two different box plots from Exercise 02 ("My Beautiful Mustache") in your data visualization project.
+
+### Describing 1st and 2nd graph price distribution
+
+**Image 1:**
+This is a box plot showing the distribution of individual item prices. The small diamond/dot shapes you were asking about are the outliers - individual data points that fall significantly outside the normal distribution range. In this case:
+
+- The main box is quite narrow and centered around 0-50
+- There are many outliers (the small dots) spread out to the right, going all the way to about 300
+- There's even a small number of outliers on the negative side (around -50)
+- This suggests that while most item prices are concentrated in a smaller range, there are some exceptionally expensive items and potentially some items with negative prices (possibly returns or discounts)
+
+**Image 2:**
+This is a box plot showing the average basket price per user, displayed with a green box:
+
+- The box spans roughly from 2 to 6, meaning the middle 50% of average basket values fall in this range
+- The vertical line inside the box (around 4) represents the median value
+- The whiskers extend to about 0 on the left and 12 on the right
+- This plot has no visible outliers, meaning all data points fall within the expected range
+
+These visualizations help understand the price distributions in your dataset. The first plot shows there's a wide spread of individual item prices with many outliers, while the second suggests that when you look at customer averages, the spending patterns are more consistent with fewer extreme values.
+
 ### Describing 3th graph price distribution
 
 This image shows a box plot, which is a simple way to visualize the distribution of numerical data.
