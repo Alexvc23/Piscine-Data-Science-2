@@ -1,3 +1,28 @@
+
+# Elbow Method for K-Means Clustering
+
+# This script connects to a PostgreSQL database, extracts purchase data, and applies
+# the Elbow method to determine the optimal number of clusters for K-means clustering.
+
+# The script:
+# 1. Connects to a PostgreSQL database using provided credentials
+# 2. Executes a SQL query to get user purchase counts (limited to <30 purchases)
+# 3. Applies K-means clustering with varying numbers of clusters (1-9)
+# 4. Calculates Within-Cluster Sum of Squares (WSS) for each cluster configuration
+# 5. Plots the WSS values against number of clusters to identify the "elbow point"
+#     which suggests the optimal number of clusters
+
+# Database Requirements:
+# - PostgreSQL database named "piscineds"
+# - Table "customers" with columns:
+#   - user_id
+#   - event_type (containing 'purchase' events)
+
+# Dependencies:
+# - psycopg2
+# - matplotlib
+# - sklearn.cluster (KMeans)
+
 import psycopg2
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
@@ -10,9 +35,6 @@ host = "localhost"
 port = "5432"
 
 try:
-    with open("ex04/elbow.sql", "r") as sql_file:
-        sql_script = sql_file.read()
-    print("SQL code has been imported!")
     conn = psycopg2.connect(
         dbname=dbname,
         user=user,
@@ -20,9 +42,20 @@ try:
         host=host,
         port=port
     )
+
+    sql_query = """
+        SELECT user_id, COUNT(*) AS purchases
+        FROM customers
+        WHERE event_type = 'purchase'
+        GROUP BY user_id
+        HAVING COUNT(*) < 30
+        ORDER BY purchases DESC;
+    """
+
+
     print("Connected to PostgreSQL!")
     cursor = conn.cursor()
-    cursor.execute(sql_script)
+    cursor.execute(sql_query)
     print("SQL script executed successfully!")
     data = cursor.fetchall()
     print("Data has been fetched from the table.")
