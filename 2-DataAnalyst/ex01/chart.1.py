@@ -40,15 +40,25 @@ try:
     cursor.close()
     conn.close()
     
+    # Initialize a dictionary to store total monthly sales
+    # e.g. {'Oct': 1000.0, 'Nov': 2000.0, 'Dec': 1500.0, 'Jan': 3000.0}
     monthly_sales = defaultdict(float)
     
+    # Calculate total monthly sales
     for event_time, event_type, price in data:
+        # Check if the event type is a purchase
         if event_type == 'purchase':
+            # Extract the year, month, and day from the event time
             year, month, day = event_time.year, event_time.month, event_time.day
+            # Format the month as a 3-letter string
             month_str = datetime(year, month, 1).strftime('%b')
+            # Add the price to the total sales for the month
             monthly_sales[month_str] += float(price)
     
     months = ['Oct', 'Nov', 'Dec', 'Jan']
+    # Apply an 80% reduction to the monthly sales
+    # in order to display the sales in Altairian Dollars
+    # e.g [800.0, 1600.0, 1200.0, 2400.0]
     sales = [monthly_sales[month] * 0.8 for month in months]
     
     plt.figure(figsize=(10, 6))

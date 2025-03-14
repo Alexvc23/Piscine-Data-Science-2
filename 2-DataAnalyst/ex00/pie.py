@@ -1,3 +1,15 @@
+
+# !Customer Event Distribution Pie Chart Visualization
+    #!to count different customer event types, and visualizes the data as a pie chart.
+# !The script performs the following operations:
+    #?Creates a pie chart visualization with custom colors for each event type
+# Database Schema Dependencies:
+# - Requires a 'customers' table with an 'event_type' column
+# Deptplotlib: For creating the pie chart visualization
+# Usage:
+# !Run this script directly to generate a pie chart showing the distribution
+    # !of customer event types (view, purchase, cart, remove_from_cart).
+
 import psycopg2
 import matplotlib.pyplot as plt
 
