@@ -102,6 +102,22 @@ This shows how normalization affects the data distribution differently from stan
 
 Your custom `NormalizeMax` function performs min-max scaling, and the visualization demonstrates how the normalized features maintain relative relationships while being scaled to a common range.
 
+# Standardization vs Normalization: Quick Reference
+
+Here's a comparison table between standardization and normalization to highlight their key differences:
+
+| Aspect | Standardization | Normalization |
+|--------|----------------|---------------|
+| **Formula** | (x - mean) / std_dev | (x - min) / (max - min) |
+| **Output Range** | Unbounded, typically between -3 and +3 | Fixed range, typically [0,1] |
+| **Central Tendency** | Mean = 0 | No specific central value |
+| **Effect on Outliers** | Preserves outliers (still visible) | Compresses outliers into the fixed range |
+| **When to Use** | • Data follows normal distribution<br>• For algorithms sensitive to feature magnitudes (SVM, PCA, k-means)<br>• When outlier influence should be maintained | • When you need bounded values<br>• For algorithms requiring bounded inputs (Neural Networks)<br>• When features have very different scales<br>• When outliers should be dampened |
+| **Advantages** | • Handles features with different scales<br>• Preserves distribution shape<br>• Works well with parametric methods | • Easy to interpret (percentage of range)<br>• Guarantees all features have exactly same scale<br>• **Better for visualization** |
+| **Disadvantages** | • Doesn't produce fixed-scale outputs<br>• Less intuitive to interpret | • Highly sensitive to outliers<br>• Can mask differences between most data points |
+
+The choice between them depends on your specific data characteristics and the requirements of your machine learning algorithm.
+
 ### Exercise 05: Data Splitting (Normalization.py - second file)
 
 **Goal**: Split the training dataset into training and validation sets.
