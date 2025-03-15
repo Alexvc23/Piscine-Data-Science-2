@@ -66,6 +66,7 @@ try:
     # Initialize an empty list to store Within-Cluster Sum of Squares (WSS) values
     # squared (wss) is a common abbreviation for Within-Cluster Sum of Squares
     wss = []
+    # e. g
     # Loop through different numbers of clusters from 1 to 9
     # 10 beacasue the range function is exclusive of the last number
     for k in range(1, 10):
